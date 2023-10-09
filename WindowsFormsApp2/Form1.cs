@@ -16,9 +16,7 @@ using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Text.Json.Serialization;
-
-
-
+using System.Diagnostics;
 
 namespace WindowsFormsApp2
 {
@@ -72,18 +70,94 @@ namespace WindowsFormsApp2
                     code = "";
                     this.ActiveControl = textBox1;
                     Thread workerThread = new Thread(new ThreadStart(Print));
-                    workerThread.Start();
+                 //   workerThread.Start();
 
                 }
                 else
                 {
+                    loading_icon.Visible = true;
                     status = 0;
                     info.Text = "Barcode controleren...";
-                    loading_icon.Visible = true;
+                   
                     Thread workerThread = new Thread(new ThreadStart(Print));
                     // workerThread.Start();
                
-                   await SendInfo();
+                    var s = Task.Factory.StartNew(async() =>
+                    {
+                        try
+                        {
+
+                            var values = "{\"code\":\"" + code + "\"}";
+                            JObject json = JObject.Parse(values);
+
+                            var jsonString = JsonConvert.SerializeObject(json);
+
+
+                            var content = new StringContent(values, Encoding.UTF8, "application/json");
+
+
+                            var response = await client.PostAsync("http://192.168.100.3/", content);
+
+                            Debug.WriteLine("fetching");
+
+                            var responseString = await response.Content.ReadAsStringAsync();
+                            if (response.StatusCode == HttpStatusCode.OK)
+                            {
+                                JObject jsonObject = JObject.Parse(responseString);
+                                string value = jsonObject["login"].ToString();
+                                login = Convert.ToBoolean(value);
+                                loading_icon.Visible = false;
+                                status = 1;
+                                code = "";
+                                return true;
+                            }
+                            else
+                            {
+                                info.Text = "Er ging iets mis.";
+
+                                code = "";
+                                loading_icon.Visible = false;
+                                status = 2;
+
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            code = "";
+                            status = 2;
+                            this.info.Invoke((MethodInvoker)delegate {
+                                info.Text = "Er ging iets mis. (server is onbereikbaar)";
+                                loading_icon.Visible = false;
+                                info.Update();
+                                Debug.WriteLine("Exeption used");
+                            });
+
+
+                        }
+
+                        return false;
+                    });
+
+
+                    int count = 1;
+
+                    while(!s.IsCompleted) {
+                        this.info.Invoke((MethodInvoker)delegate {
+                            info.Text = "Barcode controleren" + new string('.', count).ToString();
+                            info.Update();
+                        });
+                        Debug.WriteLine(count);
+                        
+                        count++;
+                        if(count == 4) count = 1;
+                        Thread.Sleep(500);
+                        Debug.WriteLine(s.Status);
+
+                    }
+
+
+
+                    Debug.WriteLine(s.Result);
                    
                     Form2 form2 = new Form2();
                     form2.code = code;
@@ -105,8 +179,15 @@ namespace WindowsFormsApp2
                     }
                     else if(status==2)
                     {
+                        this.info.Invoke((MethodInvoker)delegate {
+                            info.Text = "Er ging iets mis.";
+                            info.Update();
+                        });
+                        Debug.WriteLine("Er ging iets mis.");
+                        
+                        Thread.Sleep(3000);
+                        
 
-                      
                         info.Text = "Scan je leerlingenkaart.";
 
                     }
@@ -126,51 +207,7 @@ namespace WindowsFormsApp2
 
         }
 
-        private async Task  SendInfo()
-        {
-            try
-            {
-                var values ="{\"code\":\"" + code + "\"}";
-                JObject json = JObject.Parse(values);
 
-                var jsonString = JsonConvert.SerializeObject(json);
-                
-                
-                var content = new StringContent(values, Encoding.UTF8, "application/json");
-
-
-                var response = await client.PostAsync("http://192.168.100.3/", content);
-
-                var responseString = await response.Content.ReadAsStringAsync();
-                if (response.StatusCode == HttpStatusCode.OK)
-                {
-                    JObject jsonObject = JObject.Parse(responseString);
-                    string value = jsonObject["login"].ToString();
-                    login = Convert.ToBoolean(value);
-                    loading_icon.Visible = false;
-                    status = 1;
-                    code = "";
-                }
-                else
-                {
-                    info.Text = "Er ging iets mis.";
-                    Thread.Sleep(3000);
-                    code = "";
-                    loading_icon.Visible = false;
-                    status = 2;
-                }
-            }
-            catch (Exception ex)
-            {
-                code = "";
-                status = 2;
-                info.Text = "Er ging iets mis. (server is onbereikbaar)";
-                loading_icon.Visible = false;
-                Thread.Sleep(3000);
-            }
-    
-            
-        }
      
         private  void Print()
         { 
@@ -188,7 +225,7 @@ namespace WindowsFormsApp2
                         else if (info.Text == "Barcode controleren..") info.Invoke((MethodInvoker)(() => info.Text = "Barcode controleren..."));
                         else if (info.Text == "Barcode controleren.") info.Invoke((MethodInvoker)(() => info.Text = "Barcode controleren.."));
 
-                        Thread.Sleep(500);
+                        
 
                     }
 
