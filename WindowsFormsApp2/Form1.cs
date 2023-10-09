@@ -69,8 +69,7 @@ namespace WindowsFormsApp2
                     info.Text = "Ongeldige Barcode.";
                     code = "";
                     this.ActiveControl = textBox1;
-                    Thread workerThread = new Thread(new ThreadStart(Print));
-                 //   workerThread.Start();
+           
 
                 }
                 else
@@ -79,83 +78,19 @@ namespace WindowsFormsApp2
                     status = 0;
                     info.Text = "Barcode controleren...";
                    
-                    Thread workerThread = new Thread(new ThreadStart(Print));
-                    // workerThread.Start();
+                  
                
-                    var s = Task.Factory.StartNew(async() =>
+                    var s = await Task.Factory.StartNew(async() =>
                     {
-                        try
-                        {
-
-                            var values = "{\"code\":\"" + code + "\"}";
-                            JObject json = JObject.Parse(values);
-
-                            var jsonString = JsonConvert.SerializeObject(json);
-
-
-                            var content = new StringContent(values, Encoding.UTF8, "application/json");
-
-
-                            var response = await client.PostAsync("http://192.168.100.3/", content);
-
-                            Debug.WriteLine("fetching");
-
-                            var responseString = await response.Content.ReadAsStringAsync();
-                            if (response.StatusCode == HttpStatusCode.OK)
-                            {
-                                JObject jsonObject = JObject.Parse(responseString);
-                                string value = jsonObject["login"].ToString();
-                                login = Convert.ToBoolean(value);
-                                loading_icon.Visible = false;
-                                status = 1;
-                                code = "";
-                                return true;
-                            }
-                            else
-                            {
-                                info.Text = "Er ging iets mis.";
-
-                                code = "";
-                                loading_icon.Visible = false;
-                                status = 2;
-
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            code = "";
-                            status = 2;
-                            this.info.Invoke((MethodInvoker)delegate {
-                                info.Text = "Er ging iets mis. (server is onbereikbaar)";
-                                loading_icon.Visible = false;
-                                info.Update();
-                                Debug.WriteLine("Exeption used");
-                            });
-
-
-                        }
+                       
 
                         return false;
                     });
 
 
-                    int count = 1;
-
-                    while(!s.IsCompleted) {
-                        this.info.Invoke((MethodInvoker)delegate {
-                            info.Text = "Barcode controleren" + new string('.', count).ToString();
-                            info.Update();
-                        });
-                        Debug.WriteLine(count);
-                        
-                        count++;
-                        if(count == 4) count = 1;
-                        Thread.Sleep(500);
-                        Debug.WriteLine(s.Status);
-
-                    }
 
 
+                    await SendInfo();
 
                     Debug.WriteLine(s.Result);
                    
@@ -179,17 +114,13 @@ namespace WindowsFormsApp2
                     }
                     else if(status==2)
                     {
-                        this.info.Invoke((MethodInvoker)delegate {
-                            info.Text = "Er ging iets mis.";
-                            info.Update();
-                        });
-                        Debug.WriteLine("Er ging iets mis.");
-                        
+
+                        Debug.WriteLine("er ging iets mis2");
                         Thread.Sleep(3000);
                         
 
                         info.Text = "Scan je leerlingenkaart.";
-
+                        info.Update();
                     }
                     else
                         //  form2.ShowDialog();
@@ -209,36 +140,60 @@ namespace WindowsFormsApp2
 
 
      
-        private  void Print()
-        { 
-            string oudInfo = info.Text;
-            while (true)
+        private async Task SendInfo()
+        {
+
+            try
             {
 
-                
-                if (info.Text == "Barcode controleren.")
+                var values = "{\"code\":\"" + code + "\"}";
+                JObject json = JObject.Parse(values);
+
+                var jsonString = JsonConvert.SerializeObject(json);
+
+
+                var content = new StringContent(values, Encoding.UTF8, "application/json");
+
+
+                var response = await client.PostAsync("http://192.168.100.3/", content);
+
+                Debug.WriteLine("fetching");
+
+                var responseString = await response.Content.ReadAsStringAsync();
+                if (response.StatusCode == HttpStatusCode.OK)
                 {
-                    while (status == 0)
-                    {
+                    JObject jsonObject = JObject.Parse(responseString);
+                    string value = jsonObject["login"].ToString();
+                    login = Convert.ToBoolean(value);
+                    loading_icon.Visible = false;
+                    status = 1;
+                    code = "";
+               
+                }
+                else
+                {
+                    info.Text = "Er ging iets mis.";
 
-                        if (info.Text == "Barcode controleren...") info.Invoke((MethodInvoker)(() => info.Text = "Barcode controleren."));
-                        else if (info.Text == "Barcode controleren..") info.Invoke((MethodInvoker)(() => info.Text = "Barcode controleren..."));
-                        else if (info.Text == "Barcode controleren.") info.Invoke((MethodInvoker)(() => info.Text = "Barcode controleren.."));
-
-                        
-
-                    }
-
+                    code = "";
+                    loading_icon.Visible = false;
+                    status = 2;
 
                 }
-
-                if (info.Text == "Ongeldige Barcode." || info.Text == "Ongeldige leerlingenkaart." || info.Text == "Er ging iets mis." || info.Text == "Er ging iets mis. (server is onbereikbaar)") {
-                    Thread.Sleep(3000);
-                    info.Invoke((MethodInvoker)(() => info.Text = "Scan je leerlingenkaart."));
-                } 
             }
-     
-         
+            catch (Exception ex)
+            {
+                code = "";
+                status = 2;
+                this.info.Invoke((MethodInvoker)delegate {
+                    info.Text = "Er ging iets mis. (server is onbereikbaar)";
+                    loading_icon.Visible = false;
+                    info.Update();
+                    Debug.WriteLine("Exeption used");
+                });
+
+
+            }
+
         }
 
         private void pictureBox1_Click(object sender, EventArgs e)
