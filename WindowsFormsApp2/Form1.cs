@@ -33,7 +33,8 @@ namespace WindowsFormsApp2
             InitializeComponent();
             textBox1.Hide();
             loading_icon.Visible = false;
-
+            Thread print = new Thread(Print);
+            print.Start();
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -69,14 +70,18 @@ namespace WindowsFormsApp2
                     info.Text = "Ongeldige Barcode.";
                     code = "";
                     this.ActiveControl = textBox1;
-           
-
+                    Thread.Sleep(3000);
+                    info.Text = "Scan je leerlingenkaart.";
                 }
                 else
                 {
+                
+                    Debug.WriteLine("barcode controleren");
+                    this.KeyPreview =false;
+                    textBox1.Enabled = false;
                     loading_icon.Visible = true;
                     status = 0;
-                    info.Text = "Barcode controleren...";
+                    info.Text = "Barcode controleren.";
                    
                   
                
@@ -106,21 +111,13 @@ namespace WindowsFormsApp2
                     }
                     else if (status == 1 && !login)
                     {
-                    
                         info.Text = "Ongeldige leerlingenkaart.";
-                        Thread.Sleep(3000);
-                        info.Invoke((MethodInvoker)(() => info.Text = "Scan je leerlingenkaart."));
-
                     }
                     else if(status==2)
                     {
+                        info.Text = "Er ging iets mis. (server is onbereikbaar)";
 
-                        Debug.WriteLine("er ging iets mis2");
-                        Thread.Sleep(3000);
-                        
 
-                        info.Text = "Scan je leerlingenkaart.";
-                        info.Update();
                     }
                     else
                         //  form2.ShowDialog();
@@ -193,6 +190,38 @@ namespace WindowsFormsApp2
 
 
             }
+
+        }
+        private void Print()
+        {
+            string oudInfo = info.Text;
+            while (true)
+            {
+
+
+                if (info.Text == "Barcode controleren.")
+                {
+                    while (status == 0)
+                    {
+
+                        if (info.Text == "Barcode controleren...") info.Invoke((MethodInvoker)(() => info.Text = "Barcode controleren."));
+                        else if (info.Text == "Barcode controleren..") info.Invoke((MethodInvoker)(() => info.Text = "Barcode controleren..."));
+                        else if (info.Text == "Barcode controleren.") info.Invoke((MethodInvoker)(() => info.Text = "Barcode controleren.."));
+                        Thread.Sleep(500);  
+
+
+                    }
+
+
+                }
+
+                if (info.Text == "Ongeldige Barcode." || info.Text == "Ongeldige leerlingenkaart." || info.Text == "Er ging iets mis." || info.Text == "Er ging iets mis. (server is onbereikbaar)")
+                {
+                    Thread.Sleep(3000);
+                    info.Invoke((MethodInvoker)(() => info.Text = "Scan je leerlingenkaart."));
+                }
+            }
+
 
         }
 
