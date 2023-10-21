@@ -28,15 +28,22 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            this.info = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
+            this.info = new System.Windows.Forms.Label();
             this.loading_icon = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.loading_icon)).BeginInit();
             this.SuspendLayout();
             // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(582, 337);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(100, 20);
+            this.textBox1.TabIndex = 3;
+            // 
             // info
             // 
+            this.info.BackColor = System.Drawing.Color.White;
             this.info.Dock = System.Windows.Forms.DockStyle.Top;
             this.info.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
             this.info.Location = new System.Drawing.Point(0, 0);
@@ -47,30 +54,23 @@
             this.info.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.info.Click += new System.EventHandler(this.info_Click);
             // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(582, 337);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(100, 20);
-            this.textBox1.TabIndex = 3;
-            // 
             // loading_icon
             // 
-            this.loading_icon.BackColor = System.Drawing.Color.Transparent;
-            this.loading_icon.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.loading_icon.Image = ((System.Drawing.Image)(resources.GetObject("loading_icon.Image")));
-            this.loading_icon.Location = new System.Drawing.Point(0, 156);
+            this.loading_icon.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.loading_icon.InitialImage = global::WindowsFormsApp2.Properties.Resources.spinning_loading;
+            this.loading_icon.Location = new System.Drawing.Point(0, 159);
             this.loading_icon.Name = "loading_icon";
-            this.loading_icon.Size = new System.Drawing.Size(800, 324);
+            this.loading_icon.Size = new System.Drawing.Size(800, 321);
             this.loading_icon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.loading_icon.TabIndex = 4;
             this.loading_icon.TabStop = false;
-            this.loading_icon.Click += new System.EventHandler(this.loading_icon_Click);
+            this.loading_icon.Click += new System.EventHandler(this.loading_icon_Click_1);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(800, 480);
             this.Controls.Add(this.loading_icon);
             this.Controls.Add(this.textBox1);
@@ -90,9 +90,8 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.Label info;
         private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Label info;
         private System.Windows.Forms.PictureBox loading_icon;
     }
 }

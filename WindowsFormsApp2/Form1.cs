@@ -20,23 +20,24 @@ using System.Diagnostics;
 
 namespace WindowsFormsApp2
 {
+
     public partial class Form1 : Form
     {
+      
+        public string code = "";
         private static readonly HttpClient client = new HttpClient();
-
-        string code = "";
         bool login = false;
         int status = 0;
-    
         public Form1()
         {
+            
             InitializeComponent();
             textBox1.Hide();
             loading_icon.Visible = false;
             Thread print = new Thread(Print);
             print.Start();
         }
-
+        
         private void button1_Click(object sender, EventArgs e)
         {
             Form2 form = new Form2();
@@ -47,6 +48,7 @@ namespace WindowsFormsApp2
 
         private void Form1_Load(object sender, EventArgs e)
         {
+           
             this.ActiveControl = textBox1;
         }
 
@@ -68,6 +70,7 @@ namespace WindowsFormsApp2
                 if (code.Length != 5)
                 {
                     info.Text = "Ongeldige Barcode.";
+                    info.Update();
                     code = "";
                     this.ActiveControl = textBox1;
                     Thread.Sleep(3000);
@@ -87,8 +90,6 @@ namespace WindowsFormsApp2
                
                     var s = await Task.Factory.StartNew(async() =>
                     {
-                       
-
                         return false;
                     });
 
@@ -111,7 +112,11 @@ namespace WindowsFormsApp2
                     }
                     else if (status == 1 && !login)
                     {
-                        info.Text = "Ongeldige leerlingenkaart.";
+                        Data.bcode = code;
+                        code = "";
+                        geen_account_dialog geen_Account=new geen_account_dialog(); 
+                        geen_Account.ShowDialog();
+                       // info.Text = "Ongeldige leerlingenkaart.";
                     }
                     else if(status==2)
                     {
@@ -119,24 +124,15 @@ namespace WindowsFormsApp2
 
 
                     }
-                    else
-                        //  form2.ShowDialog();
-                        code = "";
-                    
+                    else code = "";
                     this.ActiveControl = textBox1;
                 }
-
             }
             else
             {
                 code += e.KeyChar;
-            }
-            
-
+            } 
         }
-
-
-     
         private async Task SendInfo()
         {
 
@@ -147,12 +143,12 @@ namespace WindowsFormsApp2
                 JObject json = JObject.Parse(values);
 
                 var jsonString = JsonConvert.SerializeObject(json);
-
+                
 
                 var content = new StringContent(values, Encoding.UTF8, "application/json");
 
 
-                var response = await client.PostAsync("http://192.168.100.3/", content);
+                var response = await client.PostAsync("http://localhost/check-code", content);
 
                 Debug.WriteLine("fetching");
 
@@ -164,7 +160,6 @@ namespace WindowsFormsApp2
                     login = Convert.ToBoolean(value);
                     loading_icon.Visible = false;
                     status = 1;
-                    code = "";
                
                 }
                 else
@@ -239,7 +234,15 @@ namespace WindowsFormsApp2
         {
 
         }
+
+        private void loading_icon_Click_1(object sender, EventArgs e)
+        {
+
+        }
     }
 
-
+    public class Data
+    {
+        static public string bcode = "";
+    }
 }
