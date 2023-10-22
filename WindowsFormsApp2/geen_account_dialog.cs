@@ -12,10 +12,11 @@ namespace WindowsFormsApp2
 {
     public partial class geen_account_dialog : Form
     {
-       
+        codeViewer codeViewer = new codeViewer();
         public geen_account_dialog()
         {
             InitializeComponent();
+            
         }
         
         private void info_Click(object sender, EventArgs e)
@@ -25,7 +26,7 @@ namespace WindowsFormsApp2
 
         private void button2_Click(object sender, EventArgs e)
         {
-            codeViewer codeViewer = new codeViewer();
+            this.Close();
             codeViewer.ShowDialog();
         }
 

@@ -38,6 +38,33 @@ namespace WindowsFormsApp2
                 info.Invoke((MethodInvoker)(() => info.Text = "Scan de QR-code of ga naar de site (tabblad \"Registreren via terminal\") en geef deze code in: "));
                 codelbl.Invoke((MethodInvoker)(() => codelbl.Text = text));
             });
+            client.On("register-status", response =>
+            {
+                text = response.GetValue<string>();
+                Debug.WriteLine("received code: " + text);
+                info.Invoke((MethodInvoker)(() => info.Text = "Kijk in uw mailbox voor een verificatie link."));
+                codelbl.Invoke((MethodInvoker)(() => codelbl.Text = ""));
+                pictureBox1.Invoke((MethodInvoker)(() => pictureBox1.Visible = false));
+            });
+            client.On("scan-status", response =>
+            {
+                text = response.GetValue<string>();
+                Debug.WriteLine("received code: " + text);
+                info.Invoke((MethodInvoker)(() => info.Text = "Voor de gegevens in op uw apparaat."));
+                codelbl.Invoke((MethodInvoker)(() => codelbl.Text = ""));
+                pictureBox1.Invoke((MethodInvoker)(() => pictureBox1.Visible =false));
+            });
+            client.On("end-connection", response =>
+            {
+                text = response.GetValue<string>();
+                Debug.WriteLine("received code: " + text);
+                info.Invoke((MethodInvoker)(() => info.Text = text));
+                codelbl.Invoke((MethodInvoker)(() => codelbl.Text = ""));
+                pictureBox1.Invoke((MethodInvoker)(() => pictureBox1.Visible = false));
+                Thread.Sleep(5000);
+                this.Invoke((MethodInvoker)(() => this.Close()));
+
+            });
             client.OnConnected += async (sender, e) =>
             {
                 await client.EmitAsync("get-code", Data.bcode);
@@ -48,7 +75,7 @@ namespace WindowsFormsApp2
         private void label1_TextChanged(object sender, EventArgs e)
         {
             CodeQrBarcodeDraw qrcode = BarcodeDrawFactory.CodeQr;
-            pictureBox1.Image = qrcode.Draw(web_server_address+"register/remote-registration?bcode="+codelbl.Text, 60);
+            pictureBox1.Image = qrcode.Draw(web_server_address+"register/remote-registration?code="+codelbl.Text, 60);
         }
     }
 }

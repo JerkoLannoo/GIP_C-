@@ -34,8 +34,8 @@ namespace WindowsFormsApp2
             InitializeComponent();
             textBox1.Hide();
             loading_icon.Visible = false;
-            Thread print = new Thread(Print);
-            print.Start();
+          //  Thread print = new Thread(Print);
+            //print.Start();
         }
         
         private void button1_Click(object sender, EventArgs e)
@@ -69,12 +69,12 @@ namespace WindowsFormsApp2
             {
                 if (code.Length != 5)
                 {
-                    info.Text = "Ongeldige Barcode.";
-                    info.Update();
-                    code = "";
-                    this.ActiveControl = textBox1;
-                    Thread.Sleep(3000);
                     info.Text = "Scan je leerlingenkaart.";
+                    MessageBox.Show("Ongeldige Barcode.");
+                   // info.Text = "";
+                    //info.Update();
+                    code = "";
+                    this.ActiveControl = textBox1;       
                 }
                 else
                 {
@@ -92,36 +92,28 @@ namespace WindowsFormsApp2
                     {
                         return false;
                     });
-
-
-
-
                     await SendInfo();
-
                     Debug.WriteLine(s.Result);
-                   
                     Form2 form2 = new Form2();
                     form2.code = code;
-                   
                     if (login&&status==1)
                     {
                         info.Text = "Scan je leerlingenkaart.";
-                      
-                     
                         form2.ShowDialog();
                     }
                     else if (status == 1 && !login)
                     {
                         Data.bcode = code;
                         code = "";
+                        info.Text = "Scan je leerlingenkaart.";
                         geen_account_dialog geen_Account=new geen_account_dialog(); 
                         geen_Account.ShowDialog();
                        // info.Text = "Ongeldige leerlingenkaart.";
                     }
                     else if(status==2)
                     {
-                        info.Text = "Er ging iets mis. (server is onbereikbaar)";
-
+                        info.Text = "Scan je leerlingenkaart.";
+                        MessageBox.Show("Er ging iets mis. (server is onbereikbaar)");
 
                     }
                     else code = "";
@@ -141,17 +133,10 @@ namespace WindowsFormsApp2
 
                 var values = "{\"code\":\"" + code + "\"}";
                 JObject json = JObject.Parse(values);
-
                 var jsonString = JsonConvert.SerializeObject(json);
-                
-
                 var content = new StringContent(values, Encoding.UTF8, "application/json");
-
-
-                var response = await client.PostAsync("http://localhost/check-code", content);
-
+                var response = await client.PostAsync("http://10.0.0.72:80/check-code", content);
                 Debug.WriteLine("fetching");
-
                 var responseString = await response.Content.ReadAsStringAsync();
                 if (response.StatusCode == HttpStatusCode.OK)
                 {
@@ -160,24 +145,26 @@ namespace WindowsFormsApp2
                     login = Convert.ToBoolean(value);
                     loading_icon.Visible = false;
                     status = 1;
-               
                 }
                 else
                 {
-                    info.Text = "Er ging iets mis.";
-
+                    info.Text = "Scan je leerlingenkaart.";
+                    MessageBox.Show("Er ging iets mis.");
+                   // info.Text = "Er ging iets mis.";
                     code = "";
                     loading_icon.Visible = false;
                     status = 2;
-
                 }
             }
             catch (Exception ex)
             {
                 code = "";
                 status = 2;
+                MessageBox.Show("Er ging iets mis. (server is onbereikbaar)");
                 this.info.Invoke((MethodInvoker)delegate {
-                    info.Text = "Er ging iets mis. (server is onbereikbaar)";
+                    info.Text = "Scan je leerlingenkaart.";
+                   
+                   // info.Text = "Er ging iets mis. (server is onbereikbaar)";
                     loading_icon.Visible = false;
                     info.Update();
                     Debug.WriteLine("Exeption used");
