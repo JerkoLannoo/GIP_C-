@@ -48,7 +48,6 @@ namespace WindowsFormsApp2
 
         private void Form1_Load(object sender, EventArgs e)
         {
-           
             this.ActiveControl = textBox1;
         }
 
@@ -160,14 +159,10 @@ namespace WindowsFormsApp2
             {
                 code = "";
                 status = 2;
-                MessageBox.Show("Er ging iets mis. (server is onbereikbaar)");
                 this.info.Invoke((MethodInvoker)delegate {
                     info.Text = "Scan je leerlingenkaart.";
-                   
-                   // info.Text = "Er ging iets mis. (server is onbereikbaar)";
                     loading_icon.Visible = false;
                     info.Update();
-                    Debug.WriteLine("Exeption used");
                 });
 
 

@@ -57,11 +57,12 @@
             // loading_icon
             // 
             this.loading_icon.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.loading_icon.Image = global::WindowsFormsApp2.Properties.Resources.spinning_loading;
             this.loading_icon.InitialImage = global::WindowsFormsApp2.Properties.Resources.spinning_loading;
-            this.loading_icon.Location = new System.Drawing.Point(0, 159);
+            this.loading_icon.Location = new System.Drawing.Point(0, 120);
             this.loading_icon.Name = "loading_icon";
-            this.loading_icon.Size = new System.Drawing.Size(800, 321);
-            this.loading_icon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.loading_icon.Size = new System.Drawing.Size(800, 360);
+            this.loading_icon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.loading_icon.TabIndex = 4;
             this.loading_icon.TabStop = false;
             this.loading_icon.Click += new System.EventHandler(this.loading_icon_Click_1);

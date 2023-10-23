@@ -50,7 +50,7 @@ namespace WindowsFormsApp2
             {
                 text = response.GetValue<string>();
                 Debug.WriteLine("received code: " + text);
-                info.Invoke((MethodInvoker)(() => info.Text = "Voor de gegevens in op uw apparaat."));
+                info.Invoke((MethodInvoker)(() => info.Text = "Voer de gegevens in op uw apparaat."));
                 codelbl.Invoke((MethodInvoker)(() => codelbl.Text = ""));
                 pictureBox1.Invoke((MethodInvoker)(() => pictureBox1.Visible =false));
             });
