@@ -8,7 +8,7 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>WindowsFormsApp2</RootNamespace>
     <AssemblyName>WindowsFormsApp2</AssemblyName>
-    <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
@@ -30,6 +30,7 @@
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -61,6 +62,14 @@
   </PropertyGroup>
   <PropertyGroup>
     <SignManifests>true</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <PropertyGroup />
+  <PropertyGroup />
+  <PropertyGroup>
+    <NoWin32Manifest>true</NoWin32Manifest>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="BitMiracle.LibTiff.NET, Version=2.4.649.0, Culture=neutral, PublicKeyToken=53879b3e20e7a7d6, processorArchitecture=MSIL">
@@ -227,6 +236,12 @@
     <Compile Include="codeViewer.Designer.cs">
       <DependentUpon>codeViewer.cs</DependentUpon>
     </Compile>
+    <Compile Include="dashboard.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="dashboard.Designer.cs">
+      <DependentUpon>dashboard.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -239,16 +254,31 @@
     <Compile Include="Form2.Designer.cs">
       <DependentUpon>Form2.cs</DependentUpon>
     </Compile>
+    <Compile Include="gastInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="gastInfo.Designer.cs">
+      <DependentUpon>gastInfo.cs</DependentUpon>
+    </Compile>
     <Compile Include="geen_account_dialog.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="geen_account_dialog.Designer.cs">
       <DependentUpon>geen_account_dialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="PINcode.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PINcode.Designer.cs">
+      <DependentUpon>PINcode.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="codeViewer.resx">
       <DependentUpon>codeViewer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="dashboard.resx">
+      <DependentUpon>dashboard.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
@@ -256,8 +286,14 @@
     <EmbeddedResource Include="Form2.resx">
       <DependentUpon>Form2.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="gastInfo.resx">
+      <DependentUpon>gastInfo.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="geen_account_dialog.resx">
       <DependentUpon>geen_account_dialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PINcode.resx">
+      <DependentUpon>PINcode.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

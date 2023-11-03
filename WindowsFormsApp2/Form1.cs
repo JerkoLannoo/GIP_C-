@@ -40,7 +40,7 @@ namespace WindowsFormsApp2
         
         private void button1_Click(object sender, EventArgs e)
         {
-            Form2 form = new Form2();
+            PINcode form = new PINcode();
             form.ShowDialog();
         }
 
@@ -55,11 +55,6 @@ namespace WindowsFormsApp2
         {
             this.ActiveControl = textBox1;
         }
-
-    
-
-  
-
         private async void checkEnter(object sender, KeyPressEventArgs e)
         {
             info.Text = code;
@@ -93,12 +88,14 @@ namespace WindowsFormsApp2
                     });
                     await SendInfo();
                     Debug.WriteLine(s.Result);
-                    Form2 form2 = new Form2();
-                    form2.code = code;
+                    PINcode form = new PINcode();
+                   // form.ShowDialog();
                     if (login&&status==1)
                     {
                         info.Text = "Scan je leerlingenkaart.";
-                        form2.ShowDialog();
+                        Data.bcode = code;
+                        code = "";
+                        form.ShowDialog();
                     }
                     else if (status == 1 && !login)
                     {
@@ -130,11 +127,11 @@ namespace WindowsFormsApp2
             try
             {
 
-                var values = "{\"code\":\"" + code + "\"}";
+                var values = "{\"bcode\":\"" + code + "\"}";
                 JObject json = JObject.Parse(values);
                 var jsonString = JsonConvert.SerializeObject(json);
                 var content = new StringContent(values, Encoding.UTF8, "application/json");
-                var response = await client.PostAsync("http://10.0.0.72:80/check-code", content);
+                var response = await client.PostAsync(Data.server_address+"/check-code", content);
                 Debug.WriteLine("fetching");
                 var responseString = await response.Content.ReadAsStringAsync();
                 if (response.StatusCode == HttpStatusCode.OK)
@@ -226,5 +223,7 @@ namespace WindowsFormsApp2
     public class Data
     {
         static public string bcode = "";
+        static public string server_address = "http://10.0.0.65:80";
+        static public int pin;
     }
 }

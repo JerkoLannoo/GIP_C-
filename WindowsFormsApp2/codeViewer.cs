@@ -15,9 +15,7 @@ namespace WindowsFormsApp2
 {
     public partial class codeViewer : Form
     {
-        public Data data = new Data();
-        public string server_address = "http://10.0.0.72:80/";
-        public string web_server_address = "http://10.0.0.72:8080/";
+        public string server_address = Data.server_address;
         public codeViewer()
         {
             InitializeComponent();
@@ -75,7 +73,7 @@ namespace WindowsFormsApp2
         private void label1_TextChanged(object sender, EventArgs e)
         {
             CodeQrBarcodeDraw qrcode = BarcodeDrawFactory.CodeQr;
-            pictureBox1.Image = qrcode.Draw(web_server_address+"register/remote-registration?code="+codelbl.Text, 60);
+            pictureBox1.Image = qrcode.Draw("https://gip.jerkolannoo.be/register/remote-registration?code="+codelbl.Text, 60);
         }
     }
 }
