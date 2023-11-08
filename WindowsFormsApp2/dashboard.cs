@@ -17,6 +17,7 @@ using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Text.Json.Serialization;
 using System.Diagnostics;
+using System.Collections;
 namespace WindowsFormsApp2
 {
     public partial class dashboard : Form
@@ -32,9 +33,12 @@ namespace WindowsFormsApp2
 
         private async void dashboard_Load(object sender, EventArgs e)
         {
+            LoadArrayList();
             await GetUserInfo();
             kredietLbl.Text = saldo;
             await GetInfo();
+          //  List<string> lijst = new List<string>(j);
+            
         }
         private async Task GetUserInfo()
         {
@@ -101,5 +105,17 @@ namespace WindowsFormsApp2
             gastInfo info = new gastInfo();
             info.ShowDialog();
         }
+        void LoadArrayList()
+        {
+
+            string tr = File.ReadAllText("C:\\test\\test.json");
+            JSON[] jsonObjects = JsonConvert.DeserializeObject<JSON[]>(tr);
+
+            //for (int i = 0; i < list.Count; i++)
+           // this.Text = jsonObjects[0].ok.ToString();
+
+        }
     }
+ 
+
 }

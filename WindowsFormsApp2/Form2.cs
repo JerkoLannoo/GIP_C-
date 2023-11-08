@@ -13,7 +13,7 @@ namespace WindowsFormsApp2
 
     public partial class Form2 : Form
     {
-        public  string code { get; set; }
+       // public  string code { get; set; }
         public Form2()
         {
             InitializeComponent();
@@ -28,7 +28,12 @@ namespace WindowsFormsApp2
 
         private void onload(object sender, EventArgs e)
         {
-            label1.Text = code;
+          //  label1.Text = code;
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
         }
     }
    

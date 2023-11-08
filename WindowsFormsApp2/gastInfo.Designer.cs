@@ -28,87 +28,110 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.gastInfoTable = new System.Windows.Forms.TableLayoutPanel();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.gastInfoTable.SuspendLayout();
+            this.dataView = new System.Windows.Forms.DataGridView();
+            this.gebruikersnaam = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.duratief = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.apparaten = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.wachtwoord = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.showPswdBtn = new System.Windows.Forms.Button();
+            ((System.ComponentModel.ISupportInitialize)(this.dataView)).BeginInit();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // gastInfoTable
+            // dataView
             // 
-            this.gastInfoTable.ColumnCount = 3;
-            this.gastInfoTable.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.gastInfoTable.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.gastInfoTable.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 256F));
-            this.gastInfoTable.Controls.Add(this.label3, 0, 0);
-            this.gastInfoTable.Controls.Add(this.label2, 1, 0);
-            this.gastInfoTable.Controls.Add(this.label1, 0, 0);
-            this.gastInfoTable.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.gastInfoTable.Location = new System.Drawing.Point(0, 128);
-            this.gastInfoTable.Name = "gastInfoTable";
-            this.gastInfoTable.RowCount = 1;
-            this.gastInfoTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.gastInfoTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.gastInfoTable.Size = new System.Drawing.Size(784, 313);
-            this.gastInfoTable.TabIndex = 0;
+            this.dataView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.gebruikersnaam,
+            this.duratief,
+            this.apparaten,
+            this.wachtwoord});
+            this.dataView.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.dataView.Location = new System.Drawing.Point(0, 61);
+            this.dataView.Name = "dataView";
+            this.dataView.ReadOnly = true;
+            this.dataView.Size = new System.Drawing.Size(784, 380);
+            this.dataView.TabIndex = 0;
             // 
-            // label1
+            // gebruikersnaam
             // 
-            this.label1.AutoSize = true;
-            this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(3, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(258, 313);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Gebruikersnaam";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.gebruikersnaam.Frozen = true;
+            this.gebruikersnaam.HeaderText = "Gebruikersnaam";
+            this.gebruikersnaam.Name = "gebruikersnaam";
+            this.gebruikersnaam.ReadOnly = true;
+            this.gebruikersnaam.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.gebruikersnaam.Width = 200;
             // 
-            // label2
+            // duratief
             // 
-            this.label2.AutoSize = true;
-            this.label2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(531, 0);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(250, 313);
-            this.label2.TabIndex = 1;
-            this.label2.Text = "Wachtwoord";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.duratief.Frozen = true;
+            this.duratief.HeaderText = "Duratief";
+            this.duratief.Name = "duratief";
+            this.duratief.ReadOnly = true;
+            this.duratief.Width = 200;
             // 
-            // label3
+            // apparaten
             // 
-            this.label3.AutoSize = true;
-            this.label3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(267, 0);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(258, 313);
-            this.label3.TabIndex = 2;
-            this.label3.Text = "Duratie";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.apparaten.Frozen = true;
+            this.apparaten.HeaderText = "Aantal apparaten";
+            this.apparaten.Name = "apparaten";
+            this.apparaten.ReadOnly = true;
+            this.apparaten.Width = 200;
+            // 
+            // wachtwoord
+            // 
+            this.wachtwoord.Frozen = true;
+            this.wachtwoord.HeaderText = "Wachtwoord";
+            this.wachtwoord.Name = "wachtwoord";
+            this.wachtwoord.ReadOnly = true;
+            this.wachtwoord.Width = 200;
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.showPswdBtn);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(784, 55);
+            this.panel1.TabIndex = 1;
+            // 
+            // showPswdBtn
+            // 
+            this.showPswdBtn.Dock = System.Windows.Forms.DockStyle.Right;
+            this.showPswdBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.showPswdBtn.Location = new System.Drawing.Point(515, 0);
+            this.showPswdBtn.Name = "showPswdBtn";
+            this.showPswdBtn.Size = new System.Drawing.Size(269, 55);
+            this.showPswdBtn.TabIndex = 0;
+            this.showPswdBtn.Text = "Wachtwoord van geselect. rij tonen";
+            this.showPswdBtn.UseVisualStyleBackColor = true;
+            this.showPswdBtn.Click += new System.EventHandler(this.button1_Click);
             // 
             // gastInfo
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(784, 441);
-            this.Controls.Add(this.gastInfoTable);
+            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.dataView);
             this.Name = "gastInfo";
             this.Text = "gastInfo";
             this.Load += new System.EventHandler(this.gastInfo_Load);
-            this.gastInfoTable.ResumeLayout(false);
-            this.gastInfoTable.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataView)).EndInit();
+            this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.TableLayoutPanel gastInfoTable;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.DataGridView dataView;
+        private System.Windows.Forms.DataGridViewTextBoxColumn gebruikersnaam;
+        private System.Windows.Forms.DataGridViewTextBoxColumn duratief;
+        private System.Windows.Forms.DataGridViewTextBoxColumn apparaten;
+        private System.Windows.Forms.DataGridViewTextBoxColumn wachtwoord;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Button showPswdBtn;
     }
 }
