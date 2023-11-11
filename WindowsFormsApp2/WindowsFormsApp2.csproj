@@ -230,6 +230,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BeurtInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BeurtInfo.Designer.cs">
+      <DependentUpon>BeurtInfo.cs</DependentUpon>
+    </Compile>
     <Compile Include="codeViewer.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -274,6 +280,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="BeurtInfo.resx">
+      <DependentUpon>BeurtInfo.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="codeViewer.resx">
       <DependentUpon>codeViewer.cs</DependentUpon>
     </EmbeddedResource>

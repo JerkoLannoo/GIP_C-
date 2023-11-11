@@ -37,7 +37,16 @@ namespace WindowsFormsApp2
 
         private async void gastInfo_Load(object sender, EventArgs e)
         {
-            await GetUserInfo();
+            //  await GetUserInfo();
+            StreamReader str = File.OpenText("C:\\test\\test.json");
+            
+            jsonObjects = JsonConvert.DeserializeObject<JSON[]>(str.ReadToEnd());
+            for (int i = 0; i < jsonObjects.Length; i++)
+            {
+                string pswd = "";
+                for (int y = 0; y < jsonObjects[i].password.Length; y++) pswd += "*";
+                dataView.Rows.Add(jsonObjects[i].username, formatTime(Convert.ToInt32(jsonObjects[i].time)), jsonObjects[i].devices, pswd);
+            }
 
         }
         private async Task GetUserInfo()
@@ -76,20 +85,45 @@ namespace WindowsFormsApp2
             if (time < 24) return time + "h";
             else if (time >= 24 && time < 720)
             {
-                return (time / 24) + "d";
+                return (time / 24) + " Dag(en)";
             }
             else if (time >= 720)
             {
-                return (time / 720) + "m";
+                return (time / 720) + " Maand(en)";
             }
             else return null;
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (dataView.SelectedRows[0] != null)
+            if (dataView.SelectedRows.Count > 0 && dataView.SelectedRows[0].Index < jsonObjects.Length)
             {
-                dataView.Rows[Convert.ToInt32(dataView.SelectedRows[0])].Cells[3].Value ="test";
+                dataView.Rows[Convert.ToInt32(dataView.SelectedRows[0].Index)].Cells[3].Value = jsonObjects[Convert.ToInt32(dataView.SelectedRows[0].Index)].password;
+            }
+        }
+
+        private void filterChk_CheckedChanged(object sender, EventArgs e)
+        {
+            if (filterChk.Checked)
+            {
+                dataView.Rows.Clear();
+                for (int i = 0; i < jsonObjects.Length; i++)
+                {
+                    string pswd = "";
+                    for (int y = 0; y < jsonObjects[y].password.Length; y++) pswd += "*";
+                    if (jsonObjects[i].used == 0) dataView.Rows.Add(jsonObjects[i].username, formatTime(Convert.ToInt32(jsonObjects[i].time)), jsonObjects[i].devices, pswd);
+                }
+
+            }
+            else
+            {
+                dataView.Rows.Clear();
+                for (int i = 0; i < jsonObjects.Length; i++)
+                {
+                    string pswd = "";
+                    for (int y = 0; y < jsonObjects[i].password.Length; y++) pswd += "*";
+                    dataView.Rows.Add(jsonObjects[i].username, formatTime(Convert.ToInt32(jsonObjects[i].time)), jsonObjects[i].devices, pswd);
+                }
             }
         }
     }

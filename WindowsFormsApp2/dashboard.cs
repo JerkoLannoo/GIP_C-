@@ -36,7 +36,6 @@ namespace WindowsFormsApp2
             LoadArrayList();
             await GetUserInfo();
             kredietLbl.Text = saldo;
-            await GetInfo();
           //  List<string> lijst = new List<string>(j);
             
         }
@@ -70,36 +69,6 @@ namespace WindowsFormsApp2
             }
 
         }
-        private async Task GetInfo()
-        {
-
-            try
-            {
-                var values = "{\"pincode\":\"" + Data.pin + "\", \"bcode\":\"" + Data.bcode + "\"}";
-                JObject json = JObject.Parse(values);
-                var jsonString = JsonConvert.SerializeObject(json);
-                var content = new StringContent(values, Encoding.UTF8, "application/json");
-                var response = await client.PostAsync(Data.server_address+"/get-user-beurten", content);
-                Debug.WriteLine("fetching");
-                var responseString = await response.Content.ReadAsStringAsync();
-                if (response.StatusCode == HttpStatusCode.OK)
-                {
-                    JObject jsonObject = JObject.Parse(responseString);
-                    activeDevices.Text = jsonObject["devices"].ToString();
-                    activeGdevicesLbl.Text = jsonObject["gDevices"].ToString();
-                }
-                else
-                {
-                    this.Text = "Er ging iets mis.";
-                }
-            }
-            catch (Exception ex)
-            {
-                this.Text = "Er ging iets mis.";
-            }
-
-        }
-
         private void showGDeviceInfo_Click(object sender, EventArgs e)
         {
             gastInfo info = new gastInfo();
@@ -114,6 +83,17 @@ namespace WindowsFormsApp2
             //for (int i = 0; i < list.Count; i++)
            // this.Text = jsonObjects[0].ok.ToString();
 
+        }
+
+        private void addDeviceBtn_Click(object sender, EventArgs e)
+        {
+   
+        }
+
+        private void showDeviceInfo_Click(object sender, EventArgs e)
+        {
+            BeurtInfo info = new BeurtInfo();
+            info.ShowDialog();
         }
     }
  
