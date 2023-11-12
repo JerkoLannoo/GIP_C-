@@ -24,8 +24,10 @@ namespace WindowsFormsApp2
     {
         private static readonly HttpClient client = new HttpClient();
         string saldo = "";
-        string password = "";
-        string email = "";
+        int devices = 0;
+        int gDevices = 0;
+        int nDevices = 0;
+        int nGDevices = 0;
         public dashboard()
         {
             InitializeComponent();
@@ -33,11 +35,16 @@ namespace WindowsFormsApp2
 
         private async void dashboard_Load(object sender, EventArgs e)
         {
-            LoadArrayList();
+            this.Text = "Laden...";
             await GetUserInfo();
+         
             kredietLbl.Text = saldo;
-          //  List<string> lijst = new List<string>(j);
-            
+            activeGdevicesLbl.Text = gDevices.ToString();
+            activeDevicesLbl.Text = devices.ToString();
+            nonActiveDevicesLbl.Text = nDevices.ToString();
+            nonActiveGDevicesLbl.Text = nGDevices.ToString();
+            if (nGDevices + gDevices > 0) showGDeviceInfo.Enabled = true;
+            if (nDevices + devices > 0) showDeviceInfo.Enabled = true;
         }
         private async Task GetUserInfo()
         {
@@ -54,18 +61,23 @@ namespace WindowsFormsApp2
                 if (response.StatusCode == HttpStatusCode.OK)
                 {
                     JObject jsonObject = JObject.Parse(responseString);
-                    this.Text = jsonObject["username"].ToString();
-                    saldo = "€"+ jsonObject["saldo"].ToString();
-                    password = jsonObject["password"].ToString();
-                    email = jsonObject["email"].ToString(); 
+                    this.Text = "Dashboard";
+                    saldo = "€"+ Math.Round(Convert.ToDouble(jsonObject["saldo"]), 2).ToString();
+                    devices = Convert.ToInt32(jsonObject["devices"]);
+                    gDevices = Convert.ToInt32(jsonObject["gDevices"]); 
+                    nGDevices= Convert.ToInt32(jsonObject["nGDevices"]);
+                    nDevices = Convert.ToInt32(jsonObject["nDevices"]);
                 }
                 else
                 {
+                    MessageBox.Show("Er ging iets mis");
+                    this.Close();
                 }
             }
             catch (Exception ex)
             {
-
+                MessageBox.Show("Er ging iets mis");
+                this.Close();   
             }
 
         }
@@ -74,26 +86,25 @@ namespace WindowsFormsApp2
             gastInfo info = new gastInfo();
             info.ShowDialog();
         }
-        void LoadArrayList()
-        {
-
-            string tr = File.ReadAllText("C:\\test\\test.json");
-            JSON[] jsonObjects = JsonConvert.DeserializeObject<JSON[]>(tr);
-
-            //for (int i = 0; i < list.Count; i++)
-           // this.Text = jsonObjects[0].ok.ToString();
-
-        }
 
         private void addDeviceBtn_Click(object sender, EventArgs e)
         {
-   
+            addBeurt addBeurt = new addBeurt();
+            addBeurt.Show();
+            this.Close();
         }
 
         private void showDeviceInfo_Click(object sender, EventArgs e)
         {
             BeurtInfo info = new BeurtInfo();
             info.ShowDialog();
+        }
+
+        private async void addGDeviceBtn_Click(object sender, EventArgs e)
+        {
+            AddGuest addGuest = new AddGuest();
+            addGuest.Show();
+            this.Close();
         }
     }
  

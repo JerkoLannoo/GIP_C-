@@ -37,16 +37,7 @@ namespace WindowsFormsApp2
 
         private async void gastInfo_Load(object sender, EventArgs e)
         {
-            //  await GetUserInfo();
-            StreamReader str = File.OpenText("C:\\test\\test.json");
-            
-            jsonObjects = JsonConvert.DeserializeObject<JSON[]>(str.ReadToEnd());
-            for (int i = 0; i < jsonObjects.Length; i++)
-            {
-                string pswd = "";
-                for (int y = 0; y < jsonObjects[i].password.Length; y++) pswd += "*";
-                dataView.Rows.Add(jsonObjects[i].username, formatTime(Convert.ToInt32(jsonObjects[i].time)), jsonObjects[i].devices, pswd);
-            }
+            await GetUserInfo();
 
         }
         private async Task GetUserInfo()
@@ -71,6 +62,7 @@ namespace WindowsFormsApp2
                     for (int y = 0; y<jsonObjects[i].password.Length; y++) pswd += "*";
                         dataView.Rows.Add(jsonObjects[i].username, formatTime(Convert.ToInt32(jsonObjects[i].time)), jsonObjects[i].devices, pswd);
                     }
+                this.Text = Convert.ToString(jsonObjects.Length);
                 }
                 else
                 {

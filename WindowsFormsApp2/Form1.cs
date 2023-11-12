@@ -223,7 +223,7 @@ namespace WindowsFormsApp2
     public class Data
     {
         static public string bcode = "";
-        static public string server_address = "http://192.168.100.3:80";
+        static public string server_address = "http://10.0.0.65:80";
         static public int pin;
     }
 }
